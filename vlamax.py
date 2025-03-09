@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 from fpdf import FPDF
 
 # Set page configuration (must be before any Streamlit commands)
-st.set_page_config(page_title=\"Lindblom Coaching - Metabolic Analysis\", page_icon=\":running:\")
+st.set_page_config(page_title="Lindblom Coaching - Metabolic Analysis", page_icon=":running:")
 st.image("Logotype_Light@2x.png", width=200)
 st.title("Metabolic Analysis Report")
 st.markdown("**Coach:** Alexander Lindblom")  # example branding text
