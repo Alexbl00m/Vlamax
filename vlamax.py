@@ -107,7 +107,7 @@ pdf.cell(0, 10, "Lindblom Coaching – Metabolic Test Report", ln=True, align='C
 pdf.ln(10)
 # Summary text
 pdf.set_font("Arial", '', 12)
-pdf.cell(0, 10, f"VO₂max: {vo2max:.1f} ml/kg/min", ln=True)
+pdf.cell(0, 10, f"VO2max: {vo2max:.1f} ml/kg/min", ln=True)
 pdf.cell(0, 10, f"LT1 HR: {LT1:.0f} bpm    LT2 HR: {LT2:.0f} bpm    Max HR: {HRmax:.0f} bpm", ln=True)
 pdf.cell(0, 10, f"Sprint Power (5s): {sprint_power:.0f} W", ln=True)
 pdf.ln(5)
