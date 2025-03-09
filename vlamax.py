@@ -76,7 +76,9 @@ carb_cal = calories * carb_pct/100
 
 fig_energy = px.area(x=intensity_pct, y=[fat_cal, carb_cal], labels={"x": "% Intensity", "value": "Kcal/min"},
                      title="Energy Expenditure by Fuel Source", color_discrete_sequence=["#72B7B2","#EF553B"])
-fig_energy.update_traces(stackgroup="one", names=["Fat", "Carbohydrate"])
+fig_energy.update_traces(stackgroup="one")
+for trace, new_name in zip(fig_energy.data, ["Fat", "Carbohydrate"]):
+    trace.name = new_name
 st.plotly_chart(fig_energy, use_container_width=True)
 
 # Ensure LT1, LT2, HR_max are valid (done in validation)
