@@ -1,9 +1,3 @@
-[theme]
-primaryColor="#123456" 
-backgroundColor="#FFFFFF" 
-secondaryBackgroundColor="#F0F2F6" 
-textColor="#000000"
-font="sans serif"
 
 st.set_page_config(page_title="Lindblom Coaching - Metabolic Analysis", page_icon=":running:")
 st.image("Logotype_Light@2x.png", width=200)
