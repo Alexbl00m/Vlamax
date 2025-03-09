@@ -1,5 +1,11 @@
+import streamlit as st
+import numpy as np
+import plotly.express as px
+import plotly.graph_objects as go
+from fpdf import FPDF
 
-st.set_page_config(page_title="Lindblom Coaching - Metabolic Analysis", page_icon=":running:")
+# Set page configuration (must be before any Streamlit commands)
+st.set_page_config(page_title=\"Lindblom Coaching - Metabolic Analysis\", page_icon=\":running:\")
 st.image("Logotype_Light@2x.png", width=200)
 st.title("Metabolic Analysis Report")
 st.markdown("**Coach:** Alexander Lindblom")  # example branding text
@@ -15,7 +21,6 @@ with st.form("input_form"):
     submitted = st.form_submit_button("Analyze")
     
     
-
 if submitted:
     # Basic validation checks
     if vo2max <= 0 or lt1_hr <= 0 or lt2_hr <= 0 or max_hr <= 0 or sprint_power <= 0:
@@ -24,10 +29,7 @@ if submitted:
         st.error("Ensure that LT1 HR < LT2 HR < Max HR for consistency.")
     else:
         st.success("Inputs look good! Generating analysis...")
-        # Proceed to calculations and outputs...
-        
-import numpy as np
-import plotly.express as px
+        # Proceed to calculations and outputs..
 
 # Simulate lactate curve data (for demonstration purposes)
 intensities = np.linspace(0.4, 1.1, 15) * sprint_power  # 40% to 110% of sprint power
@@ -50,9 +52,6 @@ fig_lactate.add_vline(x=0.6 * sprint_power, line_dash="dash", line_color="green"
 fig_lactate.add_vline(x=0.9 * sprint_power, line_dash="dash", line_color="red", annotation_text="LT2")
 st.plotly_chart(fig_lactate, use_container_width=True)
 
-
-
-import plotly.graph_objects as go
 
 time = np.arange(0, 300, 5)  # 5-minute exercise, data points every 5s
 tau = 40  # time constant for VO2 kinetics (example: 40s to reach ~63% of final VO2)
@@ -96,9 +95,6 @@ zones = {
 st.subheader("Personalized Heart Rate Zones")
 for zone, (low, high) in zones.items():
     st.write(f"**{zone}:** {low:.0f}–{high:.0f} bpm")
-    
-    
-from fpdf import FPDF
 
 pdf = FPDF()
 pdf.add_page()
