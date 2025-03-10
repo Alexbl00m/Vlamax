@@ -103,7 +103,7 @@ pdf.add_page()
 pdf.set_font("Arial", 'B', 16)
 # Header with logo
 pdf.image("Logotype_Light@2x.png", x=10, y=8, w=30)  # adjust x, y, width as needed
-pdf.cell(0, 10, "Lindblom Coaching – Metabolic Test Report", ln=True, align='C')
+pdf.cell(0, 10, "Lindblom Coaching - Metabolic Test Report", ln=True, align='C')
 pdf.ln(10)
 # Summary text
 pdf.set_font("Arial", '', 12)
@@ -122,7 +122,7 @@ pdf.ln(5)
 if notes:
     pdf.multi_cell(0, 8, f"Athlete Notes: {notes}")
     
-pdf_bytes = pdf.output(dest='S').encode('latin-1')
+pdf_bytes = pdf.output(dest='S').encode('latin-1', errors='replace')
 st.download_button("Download PDF Report", data=pdf_bytes, file_name="Metabolic_Report.pdf", mime="application/pdf")
 
 @st.cache_data
