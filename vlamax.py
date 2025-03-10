@@ -3,6 +3,7 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 from fpdf import FPDF
+import os
 
 # Set page configuration (must be before any Streamlit commands)
 st.set_page_config(page_title="Lindblom Coaching - Metabolic Analysis", page_icon=":running:")
@@ -98,32 +99,47 @@ st.subheader("Personalized Heart Rate Zones")
 for zone, (low, high) in zones.items():
     st.write(f"**{zone}:** {low:.0f}–{high:.0f} bpm")
 
-pdf = FPDF()
-pdf.add_page()
-pdf.set_font("Arial", 'B', 16)
-# Header with logo
-pdf.image("Logotype_Light@2x.png", x=10, y=8, w=30)  # adjust x, y, width as needed
-pdf.cell(0, 10, "Lindblom Coaching - Metabolic Test Report", ln=True, align='C')
-pdf.ln(10)
-# Summary text
-pdf.set_font("Arial", '', 12)
-pdf.cell(0, 10, f"VO2max: {vo2max:.1f} ml/kg/min", ln=True)
-pdf.cell(0, 10, f"LT1 HR: {LT1:.0f} bpm    LT2 HR: {LT2:.0f} bpm    Max HR: {HRmax:.0f} bpm", ln=True)
-pdf.cell(0, 10, f"Sprint Power (5s): {sprint_power:.0f} W", ln=True)
-pdf.ln(5)
-# Zones table
-pdf.set_font("Arial", 'B', 12)
-pdf.cell(0, 10, "Heart Rate Zones:", ln=True)
-pdf.set_font("Arial", '', 12)
-for zone, (low, high) in zones.items():
-    pdf.cell(0, 8, f"{zone}: {low:.0f}-{high:.0f} bpm", ln=True)
-pdf.ln(5)
-# Notes
-if notes:
-    pdf.multi_cell(0, 8, f"Athlete Notes: {notes}")
+# Check if the Montserrat font files exist in your project directory
+if not os.path.exists("Montserrat-Regular.ttf") or not os.path.exists("Montserrat-Bold.ttf"):
+    st.error("Missing Montserrat font files. Please include 'Montserrat-Regular.ttf' and 'Montserrat-Bold.ttf' in your project folder.")
+else:
+    pdf = FPDF()
+    pdf.add_page()
     
-pdf_bytes = pdf.output(dest='S').encode('latin-1', errors='replace')
-st.download_button("Download PDF Report", data=pdf_bytes, file_name="Metabolic_Report.pdf", mime="application/pdf")
+    # Add the Montserrat fonts (ensure uni=True for Unicode support)
+    pdf.add_font('Montserrat', '', 'Montserrat-Regular.ttf', uni=True)
+    pdf.add_font('Montserrat', 'B', 'Montserrat-Bold.ttf', uni=True)
+    
+    # Use Montserrat Bold for header
+    pdf.set_font('Montserrat', 'B', 16)
+    # Header with logo
+    pdf.image("Logotype_Light@2x.png", x=10, y=8, w=30)  # adjust as needed
+    pdf.cell(0, 10, "Lindblom Coaching - Metabolic Test Report", ln=True, align='C')
+    pdf.ln(10)
+    
+    # Summary text in Montserrat Regular
+    pdf.set_font('Montserrat', '', 12)
+    pdf.cell(0, 10, f"VO2max: {vo2max:.1f} ml/kg/min", ln=True)
+    pdf.cell(0, 10, f"LT1 HR: {LT1:.0f} bpm    LT2 HR: {LT2:.0f} bpm    Max HR: {HRmax:.0f} bpm", ln=True)
+    pdf.cell(0, 10, f"Sprint Power (5s): {sprint_power:.0f} W", ln=True)
+    pdf.ln(5)
+    
+    # Zones table in bold header then regular text
+    pdf.set_font('Montserrat', 'B', 12)
+    pdf.cell(0, 10, "Heart Rate Zones:", ln=True)
+    pdf.set_font('Montserrat', '', 12)
+    for zone, (low, high) in zones.items():
+        pdf.cell(0, 8, f"{zone}: {low:.0f}-{high:.0f} bpm", ln=True)
+    pdf.ln(5)
+    
+    # Athlete Notes
+    if notes:
+        pdf.multi_cell(0, 8, f"Athlete Notes: {notes}")
+    
+    # Output the PDF as bytes (the Unicode font should now handle all characters)
+    pdf_bytes = pdf.output(dest='S').encode('latin-1', errors='replace')
+    st.download_button("Download PDF Report", data=pdf_bytes, file_name="Metabolic_Report.pdf", mime="application/pdf")
+    
 
 @st.cache_data
 def simulate_lactate_curve(vo2max, sprint_power):
